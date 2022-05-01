@@ -1,0 +1,16 @@
+#+title: Readme
+#+author: Clement Chambard
+
+* Projet système ET3 INFO
+** Créer un shell
+*** fonctionnalités
+- commandes built-in
+  - cd
+  - reload
+  - recompile =/!\ mettre le fichier executable 'compile' dans le même dossier que l'executable 'shell'=
+- plusieurs commandes en une fois avec *&&
+
+*** Section vide
+
+** TODO choses à faire:
+- pipe et redirection
