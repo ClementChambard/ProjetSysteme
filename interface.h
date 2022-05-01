@@ -7,10 +7,7 @@ void prompt();
 /* Returns the typed command */
 char* getAnwser();
 
-/* Initialize the interface variables */
-void initInterface();
-
-/* Free the interface variables */
-void freeInterface();
+/* Initialize interface variables */
+void init_interface();
 
 #endif // INTERFACE_H_

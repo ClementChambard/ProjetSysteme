@@ -7,10 +7,14 @@
 - commandes built-in
   - cd
   - reload
-  - recompile =/!\ mettre le fichier executable 'compile' dans le même dossier que l'executable 'shell'=
-- plusieurs commandes en une fois avec *&&
+  - recompile ~/!\ mettre le fichier executable 'compile' dans le même dossier que l'executable 'shell'~
+- plusieurs commandes en une fois avec *&&* ou *;*
+- commandes en arrière plan avec *&*
+- customisation des affichages (pour l'instant uniquement dans le code)
+- possibilité de modifier le code sans sortir du shell (commande /recompile && reload/)
 
-*** Section vide
+*** Section vide (parler du fonctionnement ?)
 
-** TODO choses à faire:
-- pipe et redirection
+** TODO Choses restantes à faire:
+- redirection d'entrées sorties
+- FIX : supprimer les structures job de la mémoire quand ils sont terminés

@@ -32,12 +32,11 @@ void getTimeStr(char* timeString) {
 }
 
 char** argv;
-char* launchDir = NULL;
+char launchDir[100];
 void setGlobalArgv(char** args) { argv = args; }
 char** getGlobalArgv() { return argv; }
 void setLaunchDir()
 {
-    if (launchDir == NULL) launchDir = malloc(100);
     getcwd(launchDir, 100);
 }
 char* getLaunchDir() { return launchDir; }

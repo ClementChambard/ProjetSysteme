@@ -14,6 +14,7 @@ void free_process(process* p)
     char** a = p->argv;
     while (a) free(*(a++));
     free(p->argv);
+    free(p);
 }
 
 int check_builtin_process(char** argv)

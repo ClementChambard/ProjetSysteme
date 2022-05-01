@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
     init_shell();
-    initInterface();
+    init_interface();
     setGlobalArgv(argv);
     setLaunchDir();
     while (1)
@@ -19,6 +19,5 @@ int main(int argc, char** argv) {
 
         try_parse_command(a);
     }
-    freeInterface();
     return 0;
 }

@@ -2,36 +2,48 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+int jobBG = 0;
 
 void try_parse_command(char* command)
 {
     // /* DEBUG */ printf("command : %s\n", command);
     static char jobStr[300];
     int i = 0;
-    int sawAnd = 0;
+    int bs = 0;
     while (*command)
     {
-        if (*command == '&')
+        if (*command == '&' || *command == ';')
         {
-            if (sawAnd)
+            if (bs) { bs = 0; }
+            else if (*command == ';' || command[1] == '&')
             {
+                jobBG = 0;
+                command += 2;
                 jobStr[i++] = 0;
                 try_parse_job(jobStr);
-                sawAnd = 0;
                 i = 0;
+                continue;
             }
-            else sawAnd = 1;
-            command++;
-            continue;
+            else
+            {
+                jobBG = 1;
+                command++;
+                jobStr[i++] = 0;
+                try_parse_job(jobStr);
+                i = 0;
+                continue;
+            }
         }
-        else if (sawAnd)
-        {
-            sawAnd = 0;
-            jobStr[i++] = '&';
-        }
+
+        if (bs) { bs = 0; jobStr[i++] = '\\'; }
+        if (*command == '\\') bs = 1;
+
         jobStr[i++] = *(command++);
     }
     jobStr[i++] = 0;
+    jobBG = 0;
     try_parse_job(jobStr);
 }
 
@@ -41,7 +53,6 @@ void try_parse_job(char* jobstr)
 {
     // /* DEBUG */ printf("job : %s\n", jobstr);
     currentJob = new_job();
-    currentJob->command = jobstr;
     static char procStr[300];
     int i = 0;
     while (*jobstr)
@@ -58,12 +69,11 @@ void try_parse_job(char* jobstr)
     }
     procStr[i++] = 0;
     try_parse_process(procStr);
-    launch_job(currentJob, 1);
+    launch_job(currentJob, !jobBG);
 }
 
 void try_parse_process(char* procstr)
 {
-    // /* DEBUG */ printf("process : %s:", procstr);
     // TODO: redirect, backslashes, alias
     int cnt = 1;
     char* ps = procstr;
@@ -81,6 +91,8 @@ void try_parse_process(char* procstr)
         }
         ps++;
     }
+    if (cnt == 1) return; // Error ?
+    // /* DEBUG */ printf("process : %s:", procstr);
     // /* DEBUG */ printf(" argc = %d\n", cnt-1);
     char** argv = malloc(cnt * sizeof(char*));
     int i = 0, j = 0;

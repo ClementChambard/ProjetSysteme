@@ -24,7 +24,7 @@ job* new_job()
         j = j->next = malloc(sizeof(job));
     }
     j->next = NULL;
-    j->command = NULL;
+    //j->command = NULL;
     j->first_process = NULL;
     j->notified = 0;
     j->pgid = 0;
@@ -56,8 +56,15 @@ process* add_process(job* j)
 
 void free_job(job* j)
 {
-    free(j->command);
+    //free(j->command);
     free_process(j->first_process);
+    if (first_job == j) first_job = j->next;
+    else
+    {
+        job* jj = first_job;
+        while (jj->next && jj->next != j) jj = jj->next;
+        if (jj->next == j) jj->next = j->next;
+    }
     free(j);
 }
 
@@ -144,7 +151,7 @@ void launch_job(job *j, int foreground)
         infile = mypipe[0];
       }
 
-    //format_job_info(j, "launched");
+    if (!foreground) format_job_info(j, "launched");
 
     if (!get_shell_is_interactive()) wait_for_job(j);
     else if (foreground) put_job_in_foreground(j, 0);
@@ -241,7 +248,17 @@ void wait_for_job(job *j)
 
 void format_job_info(job *j, const char *status)
 {
-    fprintf(stderr, "%ld (%s): %s\n", (long)j->pgid, status, j->command);
+    //fprintf(stderr, "%ld (%s): %s\n", (long)j->pgid, status, j->command);
+    fprintf(stderr, "%ld (%s): ", (long)j->pgid, status);
+    process* p = j->first_process;
+    while (p)
+    {
+        char** cmd = p->argv;
+        while (*cmd) fprintf(stderr, "%s ", *(cmd++));
+        if (p->next) fprintf(stderr, "| ");
+        p = p->next;
+    }
+    fprintf(stderr, "\n");
 }
 
 void do_job_notification()
