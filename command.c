@@ -3,15 +3,29 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 int jobBG = 0;
+
+int infile = STDIN_FILENO;
+int outfile = STDOUT_FILENO;
+int errfile = STDERR_FILENO;
 
 void try_parse_command(char* command)
 {
     // /* DEBUG */ printf("command : %s\n", command);
+    infile = STDIN_FILENO;
+    outfile = STDOUT_FILENO;
+    errfile = STDERR_FILENO;
     static char jobStr[300];
+    static char redirectFile[100];
     int i = 0;
+    int ri = 0;
     int bs = 0;
+    int rs = 0;
+    int str = 0;
+    int redirect = 0;
     while (*command)
     {
         if (*command == '&' || *command == ';')
@@ -37,6 +51,31 @@ void try_parse_command(char* command)
             }
         }
 
+        if (*command == '>') { redirect = 1; command++; continue; }
+        if (*command == '<') { redirect = 2; command++; continue; }
+
+        if (redirect)
+        {
+            if (!rs && !isspace(*command)) rs = 1;
+            if (rs)
+            {
+                if (*command == '"' && !str) str = 1;
+                else if ((*command == '"' && str) || (!str && (isspace(*command) || *command == 0)))
+                {
+                    redirectFile[ri++] = 0;
+                    ri = 0;
+                    rs = 0;
+                    str = 0;
+                    if (redirect == 1) outfile = open(redirectFile, O_WRONLY | O_CREAT, 0644);
+                    else if (redirect == 2) infile = open(redirectFile, O_RDONLY);
+                    redirect = 0;
+                }
+                else redirectFile[ri++] = *command;
+            }
+            command++;
+            continue;
+        }
+
         if (bs) { bs = 0; jobStr[i++] = '\\'; }
         if (*command == '\\') bs = 1;
 
@@ -55,6 +94,9 @@ void try_parse_job(char* jobstr)
     // /* DEBUG */ printf("job : %s\n", jobstr);
     currentJob = new_job();
     currentJob->background = jobBG;
+    currentJob->stdin = infile;
+    currentJob->stdout = outfile;
+    currentJob->stderr = errfile;
     static char procStr[300];
     int i = 0;
     while (*jobstr)
@@ -72,7 +114,6 @@ void try_parse_job(char* jobstr)
     procStr[i++] = 0;
     try_parse_process(procStr);
     launch_job(currentJob, !jobBG);
-    do_job_notification();
 }
 
 void try_parse_process(char* procstr)

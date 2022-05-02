@@ -13,11 +13,14 @@ int main(int argc, char** argv) {
     {
         prompt();
 
+        do_job_notification();
+
         char* a = getAnwser();
         if (!*a) continue;
         if (!strcmp(getAnwser(), "exit")) break;
 
         try_parse_command(a);
     }
+    // free some memory ?
     return 0;
 }

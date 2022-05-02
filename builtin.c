@@ -12,7 +12,7 @@ void cd(char** args)
 {
     if (args[0] && args[1])
     {
-        printf("cd: too many arguments\n");
+        printf("shell: cd: too many arguments\n");
         return;
     }
 
@@ -25,19 +25,19 @@ void cd(char** args)
     if (dir[0] == 0 || (dir[0] == '~' && dir[1] == 0)) dir = homedir;
     int res = chdir(dir);
     if (res < 0)
-    printf("cd: %s: No such directory\n", dir);
+    printf("shell: cd: %s: No such directory\n", dir);
 }
 
 void reload(char** args)
 {
     if (args[0])
     {
-        printf("reload: too many arguments\n");
+        printf("shell: reload: too many arguments\n");
         return;
     }
     int res = chdir(getLaunchDir());
     if (res < 0)
-    printf("reload: might fail due to the original launch directory being unreachable\n");
+    printf("shell: reload: might fail due to the original launch directory being unreachable\n");
     execvp(getGlobalArgv()[0], getGlobalArgv());
     exit(0);
 }
@@ -46,7 +46,7 @@ void recompile(char** args)
 {
     if (args[0])
     {
-        printf("recompile: too many arguments\n");
+        printf("shell: recompile: too many arguments\n");
         return;
     }
 
@@ -57,13 +57,12 @@ void recompile(char** args)
         char* path = dirname(getGlobalArgv()[0]);
         int res = chdir(getLaunchDir());
         if (res < 0)
-        printf("recompile: might fail due to the original launch directory being unreachable\n");
+        printf("shell: recompile: might fail due to the original launch directory being unreachable\n");
         res = chdir(path);
         if (res < 0)
-        printf("recompile: might fail due to the original launch directory being unreachable\n");
+        printf("shell: recompile: might fail due to the original launch directory being unreachable\n");
         char* argv[] = {"./compile", NULL};
         execvp(argv[0], argv);
-        printf("done!\n");
         exit(0);
     }
     else wait(NULL);

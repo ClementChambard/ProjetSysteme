@@ -9,11 +9,12 @@
   - reload
   - recompile ~/!\ mettre le fichier executable 'compile' dans le même dossier que l'executable 'shell'~
 - plusieurs commandes en une fois avec *&&* ou *;*
-- commandes en arrière plan avec *&*
+- +commandes en arrière plan avec &+ possible de l'utiliser mais n'a pas l'air de mettre les processus en arrière plan
 - customisation des affichages (pour l'instant uniquement dans le code)
 - possibilité de modifier le code sans sortir du shell (commande /recompile && reload/)
+- redirection d'entrée sortie avec *<* et *>*
 
 *** Section vide (parler du fonctionnement ?)
 
 ** TODO Choses restantes à faire:
-- redirection d'entrées sorties
+ -  FIX : fonctionnement de *&*
