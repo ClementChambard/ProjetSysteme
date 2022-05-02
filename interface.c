@@ -1,6 +1,8 @@
 #include "interface.h"
 #include "util.h"
 
+#include "job.h"
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>

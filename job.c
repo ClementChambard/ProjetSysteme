@@ -14,16 +14,8 @@ job* get_first_job() { return first_job; }
 
 job* new_job()
 {
-    job* j;
-    if (first_job == NULL)
-        j = first_job = malloc(sizeof(job));
-    else
-    {
-        j = first_job;
-        while (j->next) j = j->next;
-        j = j->next = malloc(sizeof(job));
-    }
-    j->next = NULL;
+    job* j = malloc(sizeof(job));
+    j->next = first_job;
     //j->command = NULL;
     j->first_process = NULL;
     j->notified = 0;
@@ -31,6 +23,8 @@ job* new_job()
     j->stderr = STDERR_FILENO;
     j->stdin = STDIN_FILENO;
     j->stdout = STDOUT_FILENO;
+    j->background = 0;
+    first_job = j;
     return j;
 }
 
@@ -56,15 +50,9 @@ process* add_process(job* j)
 
 void free_job(job* j)
 {
+    if (!j) return;
     //free(j->command);
-    free_process(j->first_process);
-    if (first_job == j) first_job = j->next;
-    else
-    {
-        job* jj = first_job;
-        while (jj->next && jj->next != j) jj = jj->next;
-        if (jj->next == j) jj->next = j->next;
-    }
+    if (j->first_process) free_process(j->first_process);
     free(j);
 }
 
@@ -151,7 +139,7 @@ void launch_job(job *j, int foreground)
         infile = mypipe[0];
       }
 
-    if (!foreground) format_job_info(j, "launched");
+    format_job_info(j, "launched");
 
     if (!get_shell_is_interactive()) wait_for_job(j);
     else if (foreground) put_job_in_foreground(j, 0);
@@ -191,6 +179,7 @@ void put_job_in_background(job *j, int cont)
 
 int mark_process_status(pid_t pid, int status)
 {
+    //printf("mark for %ld\n", (long)pid);
     job *j;
     process *p;
 
@@ -248,6 +237,7 @@ void wait_for_job(job *j)
 
 void format_job_info(job *j, const char *status)
 {
+    if (!j->background) return;
     //fprintf(stderr, "%ld (%s): %s\n", (long)j->pgid, status, j->command);
     fprintf(stderr, "%ld (%s): ", (long)j->pgid, status);
     process* p = j->first_process;
@@ -277,7 +267,7 @@ void do_job_notification()
             completed and delete it from the list of active jobs.  */
         if (job_is_completed (j))
         {
-            format_job_info(j, "completed");
+            if (j->pgid > 0) format_job_info(j, "completed");
             if (jlast)
             jlast->next = jnext;
             else

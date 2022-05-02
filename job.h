@@ -14,6 +14,7 @@ typedef struct job
   char notified;              /* true if user told about stopped job */
   struct termios tmodes;      /* saved terminal modes */
   int stdin, stdout, stderr;  /* standard i/o channels */
+  char background;            /* is the job running in the background */
 } job;
 
 /* getter for global job variables */

@@ -12,7 +12,7 @@ void free_process(process* p)
 {
     if (p->next) free_process(p->next);
     char** a = p->argv;
-    while (a) free(*(a++));
+    while (*a) free(*(a++));
     free(p->argv);
     free(p);
 }

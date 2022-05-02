@@ -51,8 +51,10 @@ job* currentJob = NULL;
 
 void try_parse_job(char* jobstr)
 {
+
     // /* DEBUG */ printf("job : %s\n", jobstr);
     currentJob = new_job();
+    currentJob->background = jobBG;
     static char procStr[300];
     int i = 0;
     while (*jobstr)
@@ -70,6 +72,7 @@ void try_parse_job(char* jobstr)
     procStr[i++] = 0;
     try_parse_process(procStr);
     launch_job(currentJob, !jobBG);
+    do_job_notification();
 }
 
 void try_parse_process(char* procstr)

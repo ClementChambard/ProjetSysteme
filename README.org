@@ -17,4 +17,3 @@
 
 ** TODO Choses restantes à faire:
 - redirection d'entrées sorties
-- FIX : supprimer les structures job de la mémoire quand ils sont terminés
