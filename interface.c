@@ -10,8 +10,8 @@
 
 char* PS0ex = "";
 //Ubuntu
-/*  char* PS1ex = "\033[01;32m&u@&h\033[0m:\033[01;34m&w\033[0m$ "; //*/
-char* PS1ex = "[\033[34m&t\033[0m] [\033[35m&u@&h &W\033[0m]$ ";
+char* PS1ex = "\033[01;32m&u@&h\033[0m:\033[01;34m&w\033[0m$ "; //*/
+//char* PS1ex = "[\033[34m&t\033[0m] [\033[35m&u@&h &W\033[0m]$ ";
 char* PS2ex = "";
 char  PS0str[200];
 char  PS1str[200];
