@@ -171,7 +171,6 @@ void launch_job(job *j, int foreground)
 
 void put_job_in_foreground(job *j, int cont)
 {
-    printf("put in foreground\n");
     /* Put the job into the foreground.  */
     tcsetpgrp(get_shell_terminal(), j->pgid);
 
@@ -195,7 +194,6 @@ void put_job_in_foreground(job *j, int cont)
 
 void put_job_in_background(job *j, int cont)
 {
-    printf("put in background\n");
     /* Send the job a continue signal, if necessary.  */
     if (cont)
         if (kill(-j->pgid, SIGCONT) < 0)
