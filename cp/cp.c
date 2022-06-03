@@ -6,18 +6,12 @@
 #include <string.h>
 #include <dirent.h>
 
+#include "../util.h"
+
 char* buffer;
 size_t bloc_size;
 
 // returns the name of the file 'path' without directory
-char* basename(char const* path)
-{
-    char* s = strrchr(path, '/');
-    if (!s)
-        return strdup(path);
-    else
-        return strdup(s + 1);
-}
 
 // returns the path of the file 'file' if the destination 'path' is a directory
 char* correctPath(char const* file, char* path)
@@ -106,12 +100,12 @@ void copy(char* inputFileName, char* outputFileName)
     if (freeOutputFile) free(outputFileName);
 }
 
-int main(int argc, char** argv)
+void cp(int argc, char** argv)
 {
     if (argc != 3)
     {
         printf("wrong number of arguments\n      cp <input> <output>\n");
-        return 1;
+        return ;
     }
 
     char* inputFileName = argv[1];
@@ -119,10 +113,9 @@ int main(int argc, char** argv)
 
     buffer = malloc(4096);
     bloc_size = 4096;
-
     copy(inputFileName, outputFileName);
 
     free(buffer);
 
-    return 0;
+    return ;
 }

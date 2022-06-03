@@ -1,3 +1,3 @@
 #!/bin/sh
 
-gcc *.c -I. -Wall -g -o shell
+gcc *.c cp/*.c -I. -Wall -g -o shell

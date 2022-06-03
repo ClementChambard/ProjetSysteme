@@ -1,5 +1,6 @@
 #include "builtin.h"
 #include "util.h"
+#include "cp/cp.h"
 
 #include <pwd.h>
 #include <string.h>

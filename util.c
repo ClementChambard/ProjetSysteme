@@ -40,3 +40,5 @@ void setLaunchDir()
     getcwd(launchDir, 100);
 }
 char* getLaunchDir() { return launchDir; }
+
+

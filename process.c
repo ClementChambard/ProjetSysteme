@@ -4,6 +4,7 @@
 #include "builtin.h"
 #include "job.h"
 #include "interface.h"
+#include "cp/cp.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,11 +21,15 @@ void free_process(process* p)
 }
 
 int check_builtin_process(char** argv)
-{
+{   
+    int argc = 0;
+    char** av = argv;
+    while (*(av++)) argc++;
     if (argv == NULL) return 1;
     if (!strcmp(argv[0],"cd")) { cd(++argv); return 1; }
     if (!strcmp(argv[0],"reload")) { reload(++argv); return 1; }
     if (!strcmp(argv[0],"recompile")) { recompile(++argv); return 1; }
+    if (!strcmp(argv[0],"cp")) { cp(argc, argv); return 1; }
     return 0;
 }
 
