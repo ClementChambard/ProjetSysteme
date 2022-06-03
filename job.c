@@ -2,7 +2,6 @@
 #include "process.h"
 #include "shell.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <signal.h>
@@ -16,7 +15,6 @@ job* new_job()
 {
     job* j = malloc(sizeof(job));
     j->next = first_job;
-    //j->command = NULL;
     j->first_process = NULL;
     j->notified = 0;
     j->pgid = 0;
@@ -26,6 +24,30 @@ job* new_job()
     j->background = 0;
     first_job = j;
     return j;
+}
+
+void print_job_command(job* j)
+{
+    process* p = j->first_process;
+    while (p)
+    {
+        char** cmd = p->argv;
+        while (*cmd) printf("%s ", *(cmd++));
+        if (p->next) printf("| ");
+        p = p->next;
+    }
+}
+
+void fprint_job_command(job* j, FILE* f)
+{
+    process* p = j->first_process;
+    while (p)
+    {
+        char** cmd = p->argv;
+        while (*cmd) fprintf(f, "%s ", *(cmd++));
+        if (p->next) fprintf(f, "| ");
+        p = p->next;
+    }
 }
 
 process* add_process(job* j)
@@ -240,14 +262,7 @@ void format_job_info(job *j, const char *status)
     if (!j->background) return;
     //fprintf(stderr, "%ld (%s): %s\n", (long)j->pgid, status, j->command);
     fprintf(stderr, "%ld (%s): ", (long)j->pgid, status);
-    process* p = j->first_process;
-    while (p)
-    {
-        char** cmd = p->argv;
-        while (*cmd) fprintf(stderr, "%s ", *(cmd++));
-        if (p->next) fprintf(stderr, "| ");
-        p = p->next;
-    }
+    fprint_job_command(j, stderr);
     fprintf(stderr, "\n");
 }
 

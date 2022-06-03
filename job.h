@@ -2,13 +2,13 @@
 #define JOB_H_
 
 #include <termios.h>
+#include <stdio.h>
 #include "process.h"
 
 /* A job is a pipeline of processes.  */
 typedef struct job
 {
   struct job* next;           /* next active job */
-  //char* command;              /* command line, used for messages */
   process* first_process;     /* list of processes in this job */
   pid_t pgid;                 /* process group ID */
   char notified;              /* true if user told about stopped job */
@@ -16,6 +16,10 @@ typedef struct job
   int stdin, stdout, stderr;  /* standard i/o channels */
   char background;            /* is the job running in the background */
 } job;
+
+/* prints the job command from the argv of processes */
+void print_job_command(job* j);
+void fprint_job_command(job* j, FILE* f);
 
 /* getter for global job variables */
 job* get_first_job();

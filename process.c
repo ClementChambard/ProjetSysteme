@@ -2,6 +2,8 @@
 #include "shell.h"
 #include "util.h"
 #include "builtin.h"
+#include "job.h"
+#include "interface.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -71,5 +73,9 @@ void launch_process(process *p, pid_t pgid, int infile, int outfile, int errfile
     /* Exec the new process.  Make sure we exit.  */
     execvp(p->argv[0], p->argv);
     perror("execvp");
+    job* j = get_first_job();
+    job* j1;
+    while(j) {j1 = j; j = j->next; free_job(j1);}
+    free(getAnwser());
     exit(1);
 }

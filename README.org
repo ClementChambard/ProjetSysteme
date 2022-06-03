@@ -17,4 +17,10 @@
 *** Section vide (parler du fonctionnement ?)
 
 ** TODO Choses restantes à faire:
- -  FIX : fonctionnement de *&*
+ - FIX : fonctionnement de *&*
+ - alias
+ - jobs
+ - config file
+
+ - kill ?
+ - expressions ?

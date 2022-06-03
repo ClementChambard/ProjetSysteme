@@ -9,6 +9,8 @@
 #include <string.h>
 
 char* PS0ex = "";
+//Ubuntu
+/*  char* PS1ex = "\033[01;32m&u@&h\033[0m:\033[01;34m&w\033[0m$ "; //*/
 char* PS1ex = "[\033[34m&t\033[0m] [\033[35m&u@&h &W\033[0m]$ ";
 char* PS2ex = "";
 char  PS0str[200];
@@ -74,14 +76,13 @@ void refreshPromptStr(char* ex, char* str, int* hasToBeRefreshed)
     if (hasToBeRefreshed != NULL) *hasToBeRefreshed = refresh;
 }
 
+size_t buf_size = 0;
 void prompt()
 {
     if (PS1refresh) refreshPromptStr(PS1ex, PS1str, NULL);
     if (PS2refresh) refreshPromptStr(PS2ex, PS2str, NULL);
     printf("%s", PS1str);
-    size_t buf_size = 0;
     ssize_t read_size;
-    if (Anwser != NULL) free(Anwser);
     read_size = getline(&Anwser, &buf_size, stdin);
     Anwser[read_size-1] = 0;
     if (PS0refresh) refreshPromptStr(PS0ex, PS0str, NULL);

@@ -55,14 +55,18 @@ void recompile(char** args)
     {
         /* This is the child process.  */
         char* path = dirname(getGlobalArgv()[0]);
+        printf("path: %s -> %s\n", getGlobalArgv()[0], path);
         int res = chdir(getLaunchDir());
         if (res < 0)
         printf("shell: recompile: might fail due to the original launch directory being unreachable\n");
         res = chdir(path);
+        free(path);
         if (res < 0)
         printf("shell: recompile: might fail due to the original launch directory being unreachable\n");
         char* argv[] = {"./compile", NULL};
         execvp(argv[0], argv);
+        //char** av = argv;
+        //while (av) free(*(av++));
         exit(0);
     }
     else wait(NULL);
