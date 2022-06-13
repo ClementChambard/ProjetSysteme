@@ -8,17 +8,17 @@
   - cd
   - reload
   - recompile ~/!\ mettre le fichier executable 'compile' dans le même dossier que l'executable 'shell'~
+  - alias      /exemple : alias ll=ls -l/
 - plusieurs commandes en une fois avec *&&* ou *;*
 - commandes en arrière plan avec &
-- customisation des affichages (pour l'instant uniquement dans le code)
+- customisation des affichages 
+- création d'alias
+- prise en compte d'un fichier de configuration
 - possibilité de modifier le code sans sortir du shell (commande /recompile && reload/)
 - redirection d'entrée sortie avec *<* et *>*
 
 *** Section vide (parler du fonctionnement ?)
 
 ** TODO Choses restantes à faire:
- - alias
  - jobs
- - config file
- - kill ?
- - expressions ?
+ - kill 

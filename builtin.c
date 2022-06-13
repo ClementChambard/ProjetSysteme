@@ -1,6 +1,7 @@
 #include "builtin.h"
 #include "util.h"
 #include "cp/cp.h"
+#include "alias.h"
 
 #include <pwd.h>
 #include <string.h>
@@ -71,4 +72,33 @@ void recompile(char** args)
         exit(0);
     }
     else wait(NULL);
+}
+
+void alias(char** args)
+{
+    char* aliasDecl;
+    //concatenate all args
+    if (args[0])
+    {
+        aliasDecl = args[0];
+        for (int i = 1; args[i]; i++)
+        {
+            aliasDecl = realloc(aliasDecl, strlen(aliasDecl) + strlen(args[i]) + 1);
+            strcat(aliasDecl, " ");
+            strcat(aliasDecl, args[i]);
+        }
+    }
+    else
+    {
+        printf("shell: alias: too few arguments\n");
+        return;
+    }
+    char* cmd = strchr(aliasDecl, '=');
+    if (cmd == NULL) {
+        printf("Error: alias syntax error\n");
+        return;
+    }
+    *cmd = 0;
+    cmd++;
+    add_alias(aliasDecl, cmd);
 }

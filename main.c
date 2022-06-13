@@ -1,15 +1,23 @@
 #include "interface.h"
 #include "util.h"
+#include "config.h"
 #include "command.h"
 #include "shell.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
 
 int main(int argc, char** argv) {
+ 
+    load_config("config");
+
     init_shell();
     init_interface();
     setGlobalArgv(argv);
     setLaunchDir();
+
+    
     while (1)
     {
         prompt();

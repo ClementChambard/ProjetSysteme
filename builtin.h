@@ -10,4 +10,6 @@ void reload(char** args);
 /* recompile the shell from the shell */
 void recompile(char** args);
 
+/* adds an alias to the alias list */
+void alias(char** args);
 #endif // BUILTIN_H_

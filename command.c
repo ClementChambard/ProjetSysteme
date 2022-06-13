@@ -1,5 +1,6 @@
 #include "command.h"
-
+#include "util.h"
+#include "alias.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -171,5 +172,38 @@ void try_parse_process(char* procstr)
         // /* DEBUG */ printf("arg%d: %s\n", j, argv[j]);
     }
     process* p = add_process(currentJob);
-    p->argv = argv;
+    // check argv[0] for alias
+    char** aliasargv = find_alias(argv[0]);
+
+    if (aliasargv)
+    {
+        //printf("alias: %s\n", argv[0]);
+        // get size of aliasargv
+        int aliasargc = 0;
+        while (aliasargv[aliasargc]) aliasargc++;
+        char** newargv;
+        // fill newargv with aliasargv and argv
+        newargv = malloc((cnt+aliasargc) * sizeof(char*));
+        int i = 0;
+        while (i < aliasargc)
+        {
+            //printf("%s\n", aliasargv[i]);
+            newargv[i] = strdup(aliasargv[i]);
+            i++;
+        }
+        i = 1;
+        while (i < cnt)
+        {
+            newargv[i+aliasargc-1] = argv[i];
+            i++;
+        }
+        newargv[i+aliasargc-1] = NULL;
+        
+        p->argv = newargv;
+        free(argv);
+    }
+    else
+    {
+        p->argv = argv;
+    }
 }

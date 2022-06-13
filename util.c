@@ -42,3 +42,41 @@ void setLaunchDir()
 char* getLaunchDir() { return launchDir; }
 
 
+void getStringEscapeSequence(char* str)
+{
+    // replace occurrences of sequence "\033" with '\033'
+    char* s = str;
+    char* s2 = str;
+    while (*s)
+    {
+        if (*s == '\\' && *(s + 1) == '\\')
+        {
+            s++;
+            *(s2++) = *(s++);
+        }
+        else if (*s == '\\' && *(s + 1) == 'e')
+        {
+            s++;
+            s++;
+            *(s2++) = 27;
+        }
+        else
+        {
+            *(s2++) = *(s++);
+        }
+    }
+    *s2 = 0;
+}
+
+void replaceHomeWithTilde(char* str)
+{
+    // get home directory
+    char* home = getenv("HOME");
+    if (!home) return;
+    // replace occurrences of home directory with tilde
+    if (strncmp(home, str, strlen(home)) == 0)
+    {
+        strcpy(str+1, str+strlen(home));
+        str[0] = '~';
+    }
+}

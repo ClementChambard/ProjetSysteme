@@ -1,18 +1,14 @@
 #include "interface.h"
 #include "util.h"
-
+#include "config.h"
 #include "job.h"
+#include "alias.h"
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-char* PS0ex = "";
-//Ubuntu
-char* PS1ex = "\033[01;32m&u@&h\033[0m:\033[01;34m&w\033[0m$ "; //*/
-//char* PS1ex = "[\033[34m&t\033[0m] [\033[35m&u@&h &W\033[0m]$ ";
-char* PS2ex = "";
 char  PS0str[200];
 char  PS1str[200];
 char  PS2str[200];
@@ -51,6 +47,7 @@ void refreshPromptStr(char* ex, char* str, int* hasToBeRefreshed)
             else if (c == 'W' || c == 'w')
             {
                 getcwd(cwd, 100);
+                replaceHomeWithTilde(cwd);
                 char* cwdstr = cwd;
                 if (c == 'W') { cwdstr = basename(cwd); }
                 char* d = cwdstr;
@@ -79,13 +76,19 @@ void refreshPromptStr(char* ex, char* str, int* hasToBeRefreshed)
 size_t buf_size = 0;
 void prompt()
 {
-    if (PS1refresh) refreshPromptStr(PS1ex, PS1str, NULL);
-    if (PS2refresh) refreshPromptStr(PS2ex, PS2str, NULL);
+    if (PS1refresh) refreshPromptStr(getPS1ex(), PS1str, NULL);
+    if (PS2refresh) refreshPromptStr(getPS2ex(), PS2str, NULL);
     printf("%s", PS1str);
     ssize_t read_size;
     read_size = getline(&Anwser, &buf_size, stdin);
+
+    
+
+
+
+
     Anwser[read_size-1] = 0;
-    if (PS0refresh) refreshPromptStr(PS0ex, PS0str, NULL);
+    if (PS0refresh) refreshPromptStr(getPS0ex(), PS0str, NULL);
     if (Anwser[0] != 0) printf("%s", PS0str);
     // /* DEBUG */ printf("read %zd bytes in %zd bytes buffer '%s'\n", read_size, buf_size, Anwser);
 }
@@ -94,7 +97,7 @@ char* getAnwser() { return Anwser; }
 
 void init_interface()
 {
-    refreshPromptStr(PS0ex, PS0str, &PS0refresh);
-    refreshPromptStr(PS1ex, PS1str, &PS1refresh);
-    refreshPromptStr(PS2ex, PS2str, &PS2refresh);
+    refreshPromptStr(getPS0ex(), PS0str, &PS0refresh);
+    refreshPromptStr(getPS1ex(), PS1str, &PS1refresh);
+    refreshPromptStr(getPS2ex(), PS2str, &PS2refresh);
 }

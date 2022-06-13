@@ -16,4 +16,8 @@ char** getGlobalArgv();
 void setLaunchDir();
 char* getLaunchDir();
 
+void getStringEscapeSequence(char* str);
+
+void replaceHomeWithTilde(char* str);
+
 #endif // UTIL_H_

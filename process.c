@@ -30,6 +30,10 @@ int check_builtin_process(char** argv)
     if (!strcmp(argv[0],"reload")) { reload(++argv); return 1; }
     if (!strcmp(argv[0],"recompile")) { recompile(++argv); return 1; }
     if (!strcmp(argv[0],"cp")) { cp(argc, argv); return 1; }
+    if (!strcmp(argv[0],"alias")) { alias(++argv); return 1; }
+    //if (!strcmp(argv[0],"jobs")) { jobs(argc, argv); return 1; }
+    //if (!strcmp(argv[0],"kill")) { kill_job(argc, argv); return 1; }
+    
     return 0;
 }
 
