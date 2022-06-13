@@ -82,6 +82,12 @@ void try_parse_command(char* command)
 
         jobStr[i++] = *(command++);
     }
+    if (redirect)
+    {
+        redirectFile[ri++] = 0;
+        if (redirect == 1) outfile = open(redirectFile, O_WRONLY | O_CREAT, 0644);
+        else if (redirect == 2) infile = open(redirectFile, O_RDONLY);
+    }
     jobStr[i++] = 0;
     jobBG = 0;
     try_parse_job(jobStr);
@@ -198,7 +204,7 @@ void try_parse_process(char* procstr)
             i++;
         }
         newargv[i+aliasargc-1] = NULL;
-        
+
         p->argv = newargv;
         free(argv);
     }
