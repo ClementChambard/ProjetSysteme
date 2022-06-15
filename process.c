@@ -5,6 +5,7 @@
 #include "job.h"
 #include "interface.h"
 #include "cp/cp.h"
+#include "config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -86,5 +87,6 @@ void launch_process(process *p, pid_t pgid, int infile, int outfile, int errfile
     job* j1;
     while(j) {j1 = j; j = j->next; free_job(j1);}
     free(getAnwser());
+    free_config();
     exit(1);
 }

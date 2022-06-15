@@ -34,5 +34,6 @@ int main(int argc, char** argv) {
     job* j = get_first_job();
     job* j1;
     while(j) {j1 = j; j = j->next; free_job(j1);}
+    free_config();
     return 0;
 }

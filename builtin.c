@@ -57,7 +57,7 @@ void recompile(char** args)
     {
         /* This is the child process.  */
         char* path = dirname(getGlobalArgv()[0]);
-        //printf("path: %s -> %s\n", getGlobalArgv()[0], path);
+        printf("path: %s -> %s\n", getGlobalArgv()[0], path);
         int res = chdir(getLaunchDir());
         if (res < 0)
         printf("shell: recompile: might fail due to the original launch directory being unreachable\n");
@@ -67,8 +67,6 @@ void recompile(char** args)
         printf("shell: recompile: might fail due to the original launch directory being unreachable\n");
         char* argv[] = {"./compile", NULL};
         execvp(argv[0], argv);
-        //char** av = argv;
-        //while (av) free(*(av++));
         exit(0);
     }
     else wait(NULL);
@@ -80,10 +78,10 @@ void alias(char** args)
     //concatenate all args
     if (args[0])
     {
-        aliasDecl = args[0];
+        aliasDecl = strdup(args[0]);
         for (int i = 1; args[i]; i++)
         {
-            aliasDecl = realloc(aliasDecl, strlen(aliasDecl) + strlen(args[i]) + 1);
+            aliasDecl = realloc(aliasDecl, strlen(aliasDecl) + strlen(args[i]) + 2);
             strcat(aliasDecl, " ");
             strcat(aliasDecl, args[i]);
         }
@@ -101,4 +99,5 @@ void alias(char** args)
     *cmd = 0;
     cmd++;
     add_alias(aliasDecl, cmd);
+    free(aliasDecl);
 }

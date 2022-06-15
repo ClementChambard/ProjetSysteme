@@ -15,7 +15,6 @@ alias_t* first_alias = NULL;
 char** find_alias(char* name)
 {
     
-    // /*DEBUG*/ printf("find_alias : %s\n", name);
     alias_t* a = first_alias;
     while (a)
     {
@@ -25,12 +24,26 @@ char** find_alias(char* name)
     return NULL;
 }
 
+void free_alias(alias_t* a)
+{
+    if (!a) return;
+    free(a->name);
+    char** av = a->argv;
+    while (*av) free(*(av++));
+    free(a->argv);
+    free_alias(a->next);
+    free(a);
+}
+
+void free_aliases() { free_alias(first_alias); }
+
 void add_alias(char *name, char *value){
     
     alias_t *first = first_alias;
     first_alias = malloc(sizeof(alias_t));
+    first_alias->next = first;
     first_alias->name = strdup(name);
-    //fill first_alias->argv with tokens in value
+
     int cnt = 0;
     char* value_copy = strdup(value);
     char* token = strtok(value_copy, " ");
@@ -40,6 +53,7 @@ void add_alias(char *name, char *value){
         cnt++;
         token = strtok(NULL, " ");
     }
+    free(value_copy);
     first_alias->argv = malloc((cnt+1) * sizeof(char*));
     cnt = 0;
     token = strtok(value, " ");
@@ -51,8 +65,6 @@ void add_alias(char *name, char *value){
         token = strtok(NULL, " ");
     }
     first_alias->argv[cnt] = NULL;
-
-    first_alias->next = first;
 
     //check argv[0] for recursive alias
     char** aliasargv = find_alias(first_alias->argv[0]);
@@ -79,11 +91,9 @@ void add_alias(char *name, char *value){
             i++;
         }
         newargv[i+aliasargc-1] = NULL;
+        free(first_alias->argv[0]);
         free(first_alias->argv);
         first_alias->argv = newargv;
     }
     
-    // /*DEBUG*/ printf("alias %s='%s'\n", name, value);
 }
-
-

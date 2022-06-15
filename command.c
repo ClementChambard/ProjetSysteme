@@ -206,6 +206,7 @@ void try_parse_process(char* procstr)
         newargv[i+aliasargc-1] = NULL;
 
         p->argv = newargv;
+        free(argv[0]);
         free(argv);
     }
     else

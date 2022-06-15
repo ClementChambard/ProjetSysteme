@@ -19,8 +19,8 @@ char* basename(char const* path)
 char* dirname(char const* path)
 {
     int l = strlen(path);
-    char* s = malloc(l--);
-    strcpy(s, path);
+    char* s = malloc(l-- +1);
+    s = strcpy(s, path);
     while(s[l] != '/' && l >= 0) s[l--] = 0;
     return s;
 }
