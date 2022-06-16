@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 char  PS0str[200];
 char  PS1str[200];
@@ -78,16 +80,13 @@ void prompt()
 {
     if (PS1refresh) refreshPromptStr(getPS1ex(), PS1str, NULL);
     if (PS2refresh) refreshPromptStr(getPS2ex(), PS2str, NULL);
-    printf("%s", PS1str);
-    ssize_t read_size;
-    read_size = getline(&Anwser, &buf_size, stdin);
+    //printf("%s", PS1str);
+    Anwser = readline(PS1str);
+    add_history(Anwser);
+    //ssize_t read_size;
+    //read_size = getline(&Anwser, &buf_size, stdin);
 
-    
-
-
-
-
-    Anwser[read_size-1] = 0;
+    //Anwser[read_size-1] = 0;
     if (PS0refresh) refreshPromptStr(getPS0ex(), PS0str, NULL);
     if (Anwser[0] != 0) printf("%s", PS0str);
     // /* DEBUG */ printf("read %zd bytes in %zd bytes buffer '%s'\n", read_size, buf_size, Anwser);
