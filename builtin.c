@@ -2,6 +2,7 @@
 #include "util.h"
 #include "cp/cp.h"
 #include "alias.h"
+#include "job.h"
 
 #include <pwd.h>
 #include <string.h>
@@ -100,4 +101,40 @@ void alias(char** args)
     cmd++;
     add_alias(aliasDecl, cmd);
     free(aliasDecl);
+}
+
+void jobs(char** args)
+{
+    if (args[0])
+    {
+        printf("shell: jobs: too many arguments\n");
+        return;
+    }
+    job* j = get_first_job();
+    while (j)
+    {
+        if (!job_is_completed(j) && !job_is_stopped(j) && j->pgid != 0)
+        {
+            printf("%d : ", j->pgid);
+            fprint_job_command(j, stdout);
+            printf("\n");
+        }
+        j = j->next;
+    }
+}
+
+void kill_builtin(char** args)
+{
+    if (args[1])
+    {
+        printf("shell: kill: too many arguments\n");
+        return;
+    }
+    if (!args[0])
+    {
+        printf("shell: kill: too few arguments (missing pgid)\n");
+        return;
+    }
+    pid_t pid = atol(args[0]);
+    if (pid && find_job(pid)) kill(pid, SIGTERM);
 }

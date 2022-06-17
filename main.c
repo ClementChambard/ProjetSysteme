@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 
         try_parse_command(a);
     }
-    free(getAnwser());
+    free_interface();
     job* j = get_first_job();
     job* j1;
     while(j) {j1 = j; j = j->next; free_job(j1);}

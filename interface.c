@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+// GNU readline library for better input management
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -83,6 +85,7 @@ void prompt()
     //printf("%s", PS1str);
     Anwser = readline(PS1str);
     add_history(Anwser);
+
     //ssize_t read_size;
     //read_size = getline(&Anwser, &buf_size, stdin);
 
@@ -90,6 +93,12 @@ void prompt()
     if (PS0refresh) refreshPromptStr(getPS0ex(), PS0str, NULL);
     if (Anwser[0] != 0) printf("%s", PS0str);
     // /* DEBUG */ printf("read %zd bytes in %zd bytes buffer '%s'\n", read_size, buf_size, Anwser);
+}
+
+void free_interface()
+{
+    rl_clear_history();
+    if (Anwser) free(Anwser);
 }
 
 char* getAnwser() { return Anwser; }

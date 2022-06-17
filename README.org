@@ -6,6 +6,8 @@
 *** fonctionnalités
 - commandes built-in
   - cd
+  - jobs
+  - kill
   - reload
   - recompile ~/!\ mettre le fichier executable 'compile' dans le même dossier que l'executable 'shell'~
   - alias      /exemple : alias ll=ls -l/
@@ -17,8 +19,5 @@
 - possibilité de modifier le code sans sortir du shell (commande /recompile && reload/)
 - redirection d'entrée sortie avec *<* et *>*
 
-*** Section vide (parler du fonctionnement ?)
-
-** TODO Choses restantes à faire:
- - jobs
- - kill 
+** TODO Choses restantes à faire: [0/1]
+- [ ] fix comportement étrange de la mise en arrière plan

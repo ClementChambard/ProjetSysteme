@@ -10,4 +10,7 @@ char* getAnwser();
 /* Initialize interface variables */
 void init_interface();
 
+/* Free interface variables */
+void free_interface();
+
 #endif // INTERFACE_H_

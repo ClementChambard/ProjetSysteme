@@ -13,4 +13,10 @@ void recompile(char** args);
 /* adds an alias to the alias list */
 void alias(char** args);
 
+/* show the list of running jobs */
+void jobs(char** args);
+
+/* kill a job */
+void kill_builtin(char** args);
+
 #endif // BUILTIN_H_

@@ -32,8 +32,8 @@ int check_builtin_process(char** argv)
     if (!strcmp(argv[0],"recompile")) { recompile(++argv); return 1; }
     if (!strcmp(argv[0],"cp")) { cp(argc, argv); return 1; }
     if (!strcmp(argv[0],"alias")) { alias(++argv); return 1; }
-    //if (!strcmp(argv[0],"jobs")) { jobs(argc, argv); return 1; }
-    //if (!strcmp(argv[0],"kill")) { kill_job(argc, argv); return 1; }
+    if (!strcmp(argv[0],"jobs")) { jobs(++argv); return 1; }
+    if (!strcmp(argv[0],"kill")) { kill_builtin(++argv); return 1; }
     
     return 0;
 }
@@ -86,7 +86,7 @@ void launch_process(process *p, pid_t pgid, int infile, int outfile, int errfile
     job* j = get_first_job();
     job* j1;
     while(j) {j1 = j; j = j->next; free_job(j1);}
-    free(getAnwser());
+    free_interface();
     free_config();
     exit(1);
 }
