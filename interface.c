@@ -10,7 +10,7 @@
 #include <string.h>
 
 // GNU readline library for better input management
-#include <readline/readline.h>
+#include <readline/readline.h> // if compile error here, install libreadline-dev with your package manager
 #include <readline/history.h>
 
 char  PS0str[200];
