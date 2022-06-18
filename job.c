@@ -252,7 +252,7 @@ void wait_for_job(job *j)
     int status;
     pid_t pid;
 
-    do pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+    do pid = waitpid(j->pgid, &status, WUNTRACED);
     while (!mark_process_status(pid, status)
             && !job_is_stopped (j)
             && !job_is_completed (j));
